@@ -6,7 +6,7 @@ Created with React and Tailwind.
 
 - Add Task
 - Remove Task
-- In Future: Update tasks.
+- Update tasks.
 
 ## Technologies
 
