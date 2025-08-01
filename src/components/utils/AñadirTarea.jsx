@@ -14,20 +14,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import BotonFecha from "./BotonFecha";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Tasks from "./../../context/Tasks.js";
 
 const AñadirTarea = () => {
   const { añadirTarea } = Tasks();
 
   const [open, setOpen] = useState(false);
-  const [dateInput, setDate] = useState("");
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control } = useForm();
 
-  const onSubmit = ({ title, desc }) => {
-    añadirTarea(format(dateInput, "dd/MM/yyyy"), title, desc);
+  const onSubmit = ({ title, desc, fecha }) => {
+    añadirTarea(format(fecha, "dd/MM/yyyy"), title, desc);
     reset();
-    setDate("");
     setOpen(false);
   };
 
@@ -53,7 +51,13 @@ const AñadirTarea = () => {
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="fecha">Fecha</Label>
-                <BotonFecha date={dateInput} funcionDate={setDate} />
+                <Controller
+                  name="fecha"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <BotonFecha date={value} funcionDate={onChange} />
+                  )}
+                />
               </div>
             </div>
             <DialogFooter className="mt-4">
