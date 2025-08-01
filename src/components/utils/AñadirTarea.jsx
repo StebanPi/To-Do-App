@@ -14,34 +14,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import BotonFecha from "./BotonFecha";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import Tasks from "./../../context/Tasks.js";
 
-const AñadirTarea = ({ AñadirTarea }) => {
+const AñadirTarea = () => {
+  const { añadirTarea } = Tasks();
+
   const [open, setOpen] = useState(false);
-  const [fechaUsuario, setFechaUsuario] = useState(null);
-  const [tituloUsuario, setTituloUsuario] = useState("");
-  const [descripcionUsuario, setDescripcionUsuario] = useState("");
+  const [dateInput, setDate] = useState("");
+  const { register, handleSubmit, reset } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!fechaUsuario || !tituloUsuario || !descripcionUsuario) return;
-
-    AñadirTarea(fechaUsuario, tituloUsuario, descripcionUsuario);
-    console.log("Formulario enviado");
-
+  const onSubmit = ({ title, desc }) => {
+    añadirTarea(format(dateInput, "dd/MM/yyyy"), title, desc);
+    reset();
+    setDate("");
     setOpen(false);
-  };
-
-  const handleTitulo = (titulo) => {
-    setTituloUsuario(titulo);
-  };
-
-  const handleDescripcion = (descripcion) => {
-    setDescripcionUsuario(descripcion);
-  };
-
-  const handleFecha = (selectedDate) => {
-    setFechaUsuario(format(selectedDate, "dd/MM/yyyy"));
   };
 
   return (
@@ -51,32 +38,22 @@ const AñadirTarea = ({ AñadirTarea }) => {
           <Button className="cursor-pointer">Añadir Tarea</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <DialogHeader>
               <DialogTitle className="my-5">Añadir Tarea</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4">
               <div className="grid gap-3">
                 <Label htmlFor="title">Título</Label>
-                <Input
-                  id="title"
-                  name="title"
-                  value={tituloUsuario}
-                  onChange={(e) => handleTitulo(e.target.value)}
-                />
+                <Input type="text" {...register("title")} />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="descripcion">Descripción</Label>
-                <Textarea
-                  id="descripcion"
-                  name="descripcion"
-                  value={descripcionUsuario}
-                  onChange={(e) => handleDescripcion(e.target.value)}
-                />
+                <Textarea {...register("desc")} />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="fecha">Fecha</Label>
-                <BotonFecha funcionDate={handleFecha} date={fechaUsuario} />
+                <BotonFecha date={dateInput} funcionDate={setDate} />
               </div>
             </div>
             <DialogFooter className="mt-4">

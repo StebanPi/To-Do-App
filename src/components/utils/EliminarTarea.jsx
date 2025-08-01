@@ -10,8 +10,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import Tasks from "./../../context/Tasks.js";
 
-const EliminarTarea = ({ id, eliminarTarea }) => {
+const EliminarTarea = ({ id }) => {
+  const { eliminarTarea } = Tasks();
+
   return (
     <>
       <AlertDialog>

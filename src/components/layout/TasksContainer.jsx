@@ -1,8 +1,11 @@
 import CardTodo from "./../utils/CardTodo";
-const TasksContainer = ({ tasks, eliminarTarea }) => {
+import Tasks from "./../../context/Tasks.js";
+const TasksContainer = () => {
+  const { tasks } = Tasks();
+
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {tasks.length === 0 ? (
           <h2 className="text-center lg:col-span-3">
             No hay tareas registradas...
@@ -17,7 +20,6 @@ const TasksContainer = ({ tasks, eliminarTarea }) => {
                 date={date}
                 completed={completed}
                 id={id}
-                eliminarTarea={eliminarTarea}
               ></CardTodo>
             );
           })

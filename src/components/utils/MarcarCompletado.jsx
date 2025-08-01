@@ -10,9 +10,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import useTasks from "../hooks/useTasks";
+import Tasks from "./../../context/Tasks.js";
+
 const DialogTodo = ({ id, estado }) => {
-  const { actualizarTarea } = useTasks();
+  const { actualizarTarea } = Tasks();
 
   const disabled = estado;
 
@@ -37,7 +38,12 @@ const DialogTodo = ({ id, estado }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={() => actualizarTarea(id)}>
+            <AlertDialogAction
+              onClick={() => {
+                actualizarTarea(id);
+                console.log(estado);
+              }}
+            >
               Continuar
             </AlertDialogAction>
           </AlertDialogFooter>
